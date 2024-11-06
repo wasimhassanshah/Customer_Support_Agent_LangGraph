@@ -1,11 +1,17 @@
 from langgraph.graph import StateGraph, MessagesState
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq  # Replaced OpenAI with Groq
 from langgraph.prebuilt import ToolNode
 from tools import query_knowledge_base, search_for_product_reccommendations, data_protection_check, create_new_customer, place_order, retrieve_existing_customer_orders
 
+from dotenv import load_dotenv
+
 import os
 
+load_dotenv()
+
+# Set environment variable for Groq API key
+os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
 
 prompt = """#Purpose 
 
@@ -29,20 +35,20 @@ chat_template = ChatPromptTemplate.from_messages(
     ]
 )
 
-with open('./.env', 'r', encoding='utf-8') as f:
-    for line in f:
-        key, value = line.strip().split('=')
-        os.environ[key] = value
+#with open('./.env', 'r', encoding='utf-8') as f:
+#    for line in f:
+#        key, value = line.strip().split('=')
+#        os.environ[key] = value
 
 tools = [query_knowledge_base, search_for_product_reccommendations, data_protection_check, create_new_customer, place_order, retrieve_existing_customer_orders]
 
-llm = ChatOpenAI(
-    model="gpt-4o",
-    openai_api_key=os.environ['OPENAI_API_KEY']
+# Replaced OpenAI llm with Groq llm
+llm = ChatGroq(
+    model="llama-3.1-70b-versatile",
+    temperature=0.5
 )
 
 llm_with_prompt = chat_template | llm.bind_tools(tools)
-
 
 def call_agent(message_state: MessagesState):
     
@@ -58,7 +64,6 @@ def is_there_tool_calls(state: MessagesState):
         return 'tool_node'
     else:
         return '__end__'
-
 
 graph = StateGraph(MessagesState)
 
@@ -76,4 +81,3 @@ graph.add_edge('tool_node', 'agent')
 graph.set_entry_point('agent')
 
 app = graph.compile()
-

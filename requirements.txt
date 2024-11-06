@@ -1,0 +1,8 @@
+streamlit
+chromadb
+langchain 
+langgraph
+langchain-groq
+python-dotenv
+llama-index-embeddings-huggingface
+llama-index-core

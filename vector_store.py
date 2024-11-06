@@ -3,6 +3,8 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from typing import List
 import json
 
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+
 
 MODEL_NAME = 'dunzhang/stella_en_1.5B_v5'
 DB_PATH = './.chroma_db'

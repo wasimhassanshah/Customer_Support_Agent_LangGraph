@@ -1,6 +1,5 @@
-# Customer Support Agent Tutorial Episode 5
-
-In this final part of the tutorial series, we added on customer and order management to complete the proof of concept chatbot. Customers can now:
+# Customer Support Agent   
+ This is Customer SUpport Agent with customer and order management tools. Customers can now:
 
 - View existing orders
 - Create new orders and update the relevant 'databases'
